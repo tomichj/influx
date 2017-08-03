@@ -9,6 +9,7 @@ class CreateInfluxPlans < base_migration()
       t.string :interval,           limit: 250
       t.integer :interval_count
       t.integer :trial_period_days
+      t.boolean :published
 
       t.timestamps
     end
