@@ -3,15 +3,11 @@ include Influx::MigrationHelpers
 class CreateInfluxSubscriptions < base_migration()
   def change
     create_table :influx_subscriptions do |t|
-      t.references :influx_plans
+      t.references :influx_plan, index: true, null: false
+      t.integer :subscriber_id, null: false
 
       t.timestamp :start
-
-      t.string :subscriber_type
-      t.integer :subscriber_id
-
       t.boolean :cancel_at_period_end
-
       t.timestamp :current_period_start
       t.timestamp :current_period_end
       t.timestamp :ended_at
@@ -31,5 +27,7 @@ class CreateInfluxSubscriptions < base_migration()
       t.timestamps
     end
 
+    # add_foreign_key :influx_subscriptions, :influx_plans, column: :influx_plan_id
+    add_foreign_key :influx_subscriptions, :influx_plans
   end
 end

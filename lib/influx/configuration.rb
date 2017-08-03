@@ -41,6 +41,7 @@ module Influx
     # @return [String]
     attr_accessor :support_email
 
+    attr_accessor :default_currency
 
     def initialize
       @subscriber = '::User'
@@ -48,6 +49,7 @@ module Influx
       @publishable_key = EnvWrapper.new('STRIPE_PUBLISHABLE_KEY')
       @secret_key = EnvWrapper.new('STRIPE_SECRET_KEY')
       @support_email = 'sales@example.com'
+      @default_currency = 'usd'
     end
 
     # @return [Boolean] are Influx's built-in routes enabled?
@@ -66,6 +68,15 @@ module Influx
           @subscriber
         end
     end
+
+    def subscriber_singular
+      subscriber_class.model_name.singular
+    end
+
+    def subscriber_plural
+      subscriber_class.model_name.plural
+    end
+
 
     # Subscribe to a stripe event.
     #

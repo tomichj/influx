@@ -13,6 +13,6 @@ class CreateInfluxPlans < base_migration()
       t.timestamps
     end
 
-    add_index 'influx_plans', ['stripe_id'], name: 'index_influx_plans_on_stripe_id', using: :btree
+    add_index :influx_plans, :stripe_id
   end
 end
