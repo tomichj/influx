@@ -1,7 +1,7 @@
 module Influx
   class CreateSubscription
     def self.call(plan, subscriber, token)
-      subscription = Subscription.new(
+      subscription = Influx::Subscription.new(
         plan: plan,
         subscriber: subscriber
       )
@@ -9,22 +9,22 @@ module Influx
       begin
         stripe_sub = nil
         if subscriber.stripe_customer_id.blank?
-          customer = Stripe::Customer.create(
+          # creates the customer AND it's subscription
+          stripe_customer = Stripe::Customer.create(
             source: token,
             email: subscriber.email,
             plan: plan.stripe_id
           )
-          subscriber.stripe_customer_id = customer.id
+          subscriber.stripe_customer_id = stripe_customer.id
           subscriber.save!
-          stripe_sub = customer.subscriptions.first
+          stripe_sub = stripe_customer.subscriptions.first
         else
-          customer = Stripe::Customer.retrieve(user.stripe_customer_id)
-          stripe_sub = customer.subscriptions.create(
-            plan: plan.stripe_id
-          )
+          stripe_customer = Stripe::Customer.retrieve(user.stripe_customer_id)
+          stripe_sub = stripe_customer.subscriptions.create(plan: plan.stripe_id)
         end
 
         subscription.stripe_id = stripe_sub.id
+        subscription.sync_with!(stripe_sub)
         subscription.save!
       rescue Stripe::StripeError => e
         subscription.errors[:base] << e.message

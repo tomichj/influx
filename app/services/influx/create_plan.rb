@@ -1,21 +1,21 @@
 module Influx
   class CreatePlan
-    def self.call(plan)
-      begin
-        return Stripe::Plan.retrieve(plan.stripe_id)
-      rescue Stripe::InvalidRequestError
-        # fall through
+    def self.call(options={})
+      plan = Influx::Plan.new(options)
+
+      if !plan.valid?
+        return plan
       end
 
-      Stripe::Plan.create(
-        id:                plan.stripe_id,
-        amount:            plan.amount,
-        interval:          plan.interval,
-        name:              plan.name,
-        interval_count:    plan.interval_count,
-        currency:          Influx.configuration.default_currency,
-        trial_period_days: plan.trial_period_days
-        )
+      begin
+        plan.create_stripe_plan
+      rescue Stripe::StripeError => e
+        plan.errors[:base] << e.message
+        return plan
+      end
+
+      plan.save
+      return plan
     end
   end
 end
