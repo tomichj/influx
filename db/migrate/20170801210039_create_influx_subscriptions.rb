@@ -4,11 +4,9 @@ class CreateInfluxSubscriptions < base_migration()
   def change
     create_table :influx_subscriptions do |t|
       t.references :influx_plan, index: true, null: false
-
       t.integer :subscriber_id, null: false
       t.string :stripe_customer_id
       t.string :email
-
       t.timestamp :start
       t.boolean   :cancel_at_period_end
       t.timestamp :current_period_start
@@ -17,7 +15,6 @@ class CreateInfluxSubscriptions < base_migration()
       t.timestamp :trial_start
       t.timestamp :trial_end
       t.timestamp :canceled_at
-
       t.string :stripe_status
       t.string :stripe_id
       t.string :stripe_token
@@ -25,8 +22,7 @@ class CreateInfluxSubscriptions < base_migration()
       t.date   :card_expiration
       t.string :card_type
       t.text   :error
-
-
+      t.integer :amount
       t.timestamps
     end
 

@@ -7,7 +7,7 @@ module Influx
 
     validates_uniqueness_of :stripe_id
 
-    has_many :subscriptions, class_name: 'Influx::Subscription', as: :plan, dependent: :restrict_with_exception
+    has_many :subscriptions, class_name: 'Influx::Subscription'
 
     def create_stripe_plan
       Influx::CreateStripePlan.call(self)
