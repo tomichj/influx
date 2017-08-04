@@ -11,6 +11,7 @@ module Influx
       trial_end < Time.now
     end
 
+    # Update the subscription's notion of itself with the info from Stripe.
     def sync_with!(stripe_subscription)
       self.current_period_start = Time.at(stripe_subscription.current_period_start)
       self.current_period_end   = Time.at(stripe_subscription.current_period_end)
@@ -20,7 +21,6 @@ module Influx
       self.canceled_at          = Time.at(stripe_subscription.canceled_at) if stripe_subscription.canceled_at
       self.stripe_status        = stripe_subscription.status
       self.cancel_at_period_end = stripe_subscription.cancel_at_period_end
-
       self.save!
       self
     end
