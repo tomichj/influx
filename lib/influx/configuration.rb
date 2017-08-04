@@ -41,6 +41,11 @@ module Influx
     # @return [String]
     attr_accessor :support_email
 
+    # Currency you do business in.
+    #
+    # Defaults to 'usd'
+    #
+    # @return [String]
     attr_accessor :default_currency
 
     def initialize
@@ -50,6 +55,16 @@ module Influx
       @secret_key = EnvWrapper.new('STRIPE_SECRET_KEY')
       @support_email = 'sales@example.com'
       @default_currency = 'usd'
+    end
+
+    def setup_stripe
+      Stripe.api_version = ENV['STRIPE_API_VERSION'] || '2015-06-15'
+      Stripe.api_key = secret_key
+    end
+
+    def secret_key=(key)
+      @secret_key = key
+      setup_stripe
     end
 
     # @return [Boolean] are Influx's built-in routes enabled?
@@ -100,10 +115,12 @@ module Influx
 
   def self.configuration=(config)
     @configuration = config
+    configuration.setup_stripe
   end
 
   def self.configure
     yield configuration
+    configuration.setup_stripe
   end
 end
 

@@ -1,4 +1,7 @@
 module Influx
+  #
+  # Create or load a stripe plan.
+  #
   class CreateStripePlan
     def self.call(plan)
 
@@ -11,14 +14,15 @@ module Influx
 
       # Otherwise, create the plan.
       Stripe::Plan.create(
+        {
           id: plan.stripe_id,
           name: plan.name,
           amount: plan.amount,
           currency: Influx.configuration.default_currency,
           interval: plan.interval,
           interval_count: plan.interval_count,
-          trial_period_days: plan.trial_period_days,
-      )
+          trial_period_days: plan.trial_period_days
+        })
     end
   end
 end
