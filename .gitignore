@@ -1,4 +1,7 @@
+log/*.log
 /.bundle/
+/vendor/bundle
+
 /.yardoc
 /Gemfile.lock
 /_yardoc/
@@ -7,8 +10,17 @@
 /pkg/
 /spec/reports/
 /tmp/
+/.idea
 
 # rspec failure tracking
 .rspec_status
 
 /.ruby-version
+
+spec/dummy/db/*.sqlite3
+spec/dummy/db/*.sqlite3-journal
+spec/dummy/log/*.log
+spec/dummy/tmp/
+spec/dummy/.sass-cache
+
+Gemfile.lock
