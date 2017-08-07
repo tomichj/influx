@@ -1,7 +1,13 @@
 module Influx
   class CreatePlan
-    def self.call(options={})
-      plan = Influx::Plan.new(options)
+    include Influx::Service
+
+    def initialize(options={})
+      @options = options
+    end
+
+    def call
+      plan = Influx::Plan.new(@options)
       puts "initial plan: #{plan.inspect}"
 
       if !plan.valid?

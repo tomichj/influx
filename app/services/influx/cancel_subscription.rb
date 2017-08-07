@@ -1,9 +1,15 @@
 module Influx
   class CancelSubscription
-    def call(subscription, options = {})
-      stripe_subscription = Stripe::Subscription.retrieve(subscription.stripe_id)
+    include Influx::Service
+
+    def initialize(subscription)
+      @subscription = subscription
+    end
+
+    def call
+      stripe_subscription = Stripe::Subscription.retrieve(@subscription.stripe_id)
       stripe_subscription.delete
-      subscription.cancel!
+      @subscription.cancel!
     end
   end
 end
