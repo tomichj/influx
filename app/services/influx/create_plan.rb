@@ -2,29 +2,26 @@ module Influx
   class CreatePlan
     include Influx::Service
 
-    def initialize(options={})
-      @options = options
+    #
+    def initialize(params={})
+      @params = params
     end
 
     def call
-      plan = Influx::Plan.new(@options)
-      puts "initial plan: #{plan.inspect}"
+      plan = Influx::Plan.new(@params)
 
       if !plan.valid?
         return plan
       end
 
-      puts 'influx plan is valid'
-
       begin
         plan.create_stripe_plan
       rescue Stripe::StripeError => e
-        puts 'error creating stripe plan'
+        Rails.logger.info "Exception creating stripe plan from influx plan. plan:#{plan.inspect} exception:#{e.inspect}"
         plan.errors[:base] << e.message
         return plan
       end
 
-      puts 'created or loaded stripe plan'
       plan.save
       return plan
     end
