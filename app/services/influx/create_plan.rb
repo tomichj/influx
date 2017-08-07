@@ -2,11 +2,14 @@ module Influx
   class CreatePlan
     include Influx::Service
 
+    # Create an Influx::Plan, and the corresponding Stripe plan.
     #
+    # If the Influx plan is created but Stripe fails, the errors will be set on the returned Influx::Plan.
     def initialize(params={})
       @params = params
     end
 
+    # @return [Influx::Plan]
     def call
       plan = Influx::Plan.new(@params)
 
@@ -23,7 +26,7 @@ module Influx
       end
 
       plan.save
-      return plan
+      plan
     end
   end
 end

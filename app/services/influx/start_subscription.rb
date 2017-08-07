@@ -3,7 +3,7 @@ module Influx
 
     # Called by subscription.activate!
     # subscription.activate! sets state to active after this method completes
-    def initialize(subscription)
+    def initialize(subscription:)
       @subscription = subscription
       @subscriber = @subscription.subscriber
       @token = @subscription.stripe_token

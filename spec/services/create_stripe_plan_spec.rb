@@ -7,7 +7,7 @@ module Influx
         plan = create(:influx_plan)
         plan.create_stripe_plan
         expect(Stripe::Plan).to_not receive(:create)
-        Influx::CreateStripePlan.call(plan)
+        Influx::CreateStripePlan.call(plan: plan)
       end
     end
   end

@@ -2,7 +2,7 @@ module Influx
   class EventSyncSubscription
     include Influx::Service
 
-    def initialize(event)
+    def initialize(event:)
       @event = event
     end
 

@@ -10,7 +10,7 @@ module Influx
     # plan - Influx::Plan to sign up for
     # subscriber - the entity subscribing to the plan
     # token - token from stripe
-    def initialize(plan, subscriber, token, options = {})
+    def initialize(plan:, subscriber:, token:, options: {})
       @plan = plan
       @subscriber = subscriber
       @token = token

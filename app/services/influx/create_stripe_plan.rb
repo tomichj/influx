@@ -5,19 +5,19 @@ module Influx
   class CreateStripePlan
     include Influx::Service
 
-    def initialize(plan)
+    def initialize(plan:)
       @plan = plan
     end
 
     def call
-      # Try to load Stripe's notion of the plan if it already exists.
       begin
+        # Try to load Stripe's notion of the plan if it already exists.
         return Stripe::Plan.retrieve(@plan.stripe_id)
       rescue Stripe::InvalidRequestError
-        # fall through
+        # Stripe plan doesn't exists yet, that's ok.
       end
 
-      # Otherwise, create the plan.
+      # Create the plan.
       Stripe::Plan.create(
         {
           id: @plan.stripe_id,
