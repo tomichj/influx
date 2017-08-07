@@ -8,7 +8,7 @@ module Influx
         return plan
       end
 
-      puts 'plan is valid'
+      puts 'influx plan is valid'
 
       begin
         plan.create_stripe_plan
@@ -18,13 +18,11 @@ module Influx
         return plan
       end
 
-      puts 'created stripe plan'
+      puts 'created or loaded stripe plan'
       plan.save
       return plan
     end
   end
 end
 
-
 # plan = Influx::CreatePlan.call(stripe_id: 'test_plan', name: 'The Test Plan', amount: 5000, interval: 'month', interval_count: 1, trial_period_days: 30, published: false)
-

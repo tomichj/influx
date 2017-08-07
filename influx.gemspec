@@ -32,8 +32,13 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'jquery-rails'
   spec.add_dependency 'stripe', '>= 1.20.1'
   spec.add_dependency 'stripe_event', '>= 1.7.0'
+  spec.add_dependency 'aasm', '>= 4.12.2'
 
-  spec.add_development_dependency 'bundler'
-  spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'rspec'
+  spec.add_development_dependency 'sqlite3'
+  spec.add_development_dependency 'rspec-rails'
+  spec.add_development_dependency 'factory_girl_rails'
+  spec.add_development_dependency 'stripe-ruby-mock', '~> 2.3.1'
+
+  # spec.add_development_dependency 'rake'
+  # spec.add_development_dependency 'bundler'
 end

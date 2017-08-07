@@ -1,14 +1,45 @@
+require 'aasm'
+
 module Influx
   class Subscription < ActiveRecord::Base
+    include AASM
+
     validates_presence_of :plan
     validates_presence_of :subscriber
 
     belongs_to :plan, class_name: 'Influx::Plan', foreign_key: 'influx_plan_id'
     belongs_to :subscriber, class_name: Influx.configuration.subscriber
 
+    aasm column: 'state' do
+      state :pending, initial: true
+      state :active
+      state :cancelled
+      state :errored
+
+      event :activate, after: :start_subscription do
+        transitions from: :pending, to: :active
+      end
+
+      event :cancel do
+        transitions from: :active, to: :canceled
+      end
+
+      event :fail do
+        transitions from: :pending, to: :errored
+      end
+    end
+
+    def is_trial?
+      stripe_status == 'trialing'
+    end
+
     def trial_expired?
       return false unless stripe_status == 'trialing'
       trial_end < Time.now
+    end
+
+    def start_subscription
+      Influx::StartSubscription.call(self)
     end
 
     # Update the subscription's notion of itself with the info from Stripe.

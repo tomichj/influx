@@ -1,10 +1,10 @@
 module Influx
   module MigrationHelpers
-    def base_migration
+    def migration_base_class
       if Rails.version >= '5.0.0'
-        'ActiveRecord::Migration[4.2]'.constantize
+        ActiveRecord::Migration[4.2]
       else
-       'ActiveRecord::Migration'.constantize
+        ActiveRecord::Migration
       end
     end
   end
