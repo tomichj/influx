@@ -15,6 +15,7 @@ module Influx
     def call
       begin
         stripe_customer = create_or_load_stripe_customer
+        stripe_customer_source(stripe_customer)
         stripe_subscription = create_stripe_subscription(stripe_customer)
         card = stripe_customer.sources.data.first
         update_influx_subscription(stripe_subscription, card)
@@ -66,6 +67,15 @@ module Influx
 
     def load_stripe_customer
       Stripe::Customer.retrieve(@subscriber.stripe_customer_id)
+    end
+
+    def stripe_customer_source(stripe_customer)
+      unless stripe_customer.try(:deleted)
+        if stripe_customer.default_source.nil? && @token.present?
+          stripe_customer.source = @subscription.stripe_token
+          stripe_customer.save
+        end
+      end
     end
   end
 end

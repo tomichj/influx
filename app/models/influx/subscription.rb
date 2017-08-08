@@ -13,7 +13,7 @@ module Influx
     aasm column: 'state' do
       state :pending, initial: true
       state :active
-      state :cancelled
+      state :canceled
       state :errored
 
       event :activate do
