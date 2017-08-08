@@ -11,7 +11,7 @@ module Influx
         # Try to load Stripe's notion of the plan if it already exists.
         return Stripe::Plan.retrieve(@plan.stripe_id)
       rescue Stripe::InvalidRequestError
-        # Stripe plan doesn't exists yet, that's ok.
+        # Stripe plan doesn't exists yet, that's ok, let it fall through
       end
 
       # Create the plan.

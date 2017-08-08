@@ -5,15 +5,15 @@ module Influx
     let(:token){ StripeMock.generate_card_token({}) }
     describe '#call' do
       before(:each) do
-        @subscription = create(:subscription, plan: plan, stripe_token: token)
-        ActivateStripeSubscription(@subscription)
+        @subscription = create(:subscription, stripe_token: token)
+        ActivateStripePlan.call(plan: @subscription.plan)
+        ActivateStripeSubscription.call(subscription: @subscription)
       end
 
       it 'cancels the subscription immediately' do
-        CancelSubscription.call(@subscription)
+        CancelSubscription.call(subscription: @subscription)
         expect(@subscription.reload.state).to eq 'canceled'
       end
-
     end
   end
 end
