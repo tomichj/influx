@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :influx_plan, class: 'Influx::Plan' do
+  factory :plan, class: 'Influx::Plan' do
     stripe_id 'rspec-test-plan'
     name 'The Rspec Test Plan'
     amount 5000

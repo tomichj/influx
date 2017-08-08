@@ -8,7 +8,7 @@ module Influx
 
     def call
       stripe_subscription = Stripe::Subscription.retrieve(@subscription.stripe_id)
-      stripe_subscription.delete
+      stripe_subscription.delete if stripe_subscription
       @subscription.cancel!
     end
   end

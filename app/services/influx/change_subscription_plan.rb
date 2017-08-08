@@ -18,9 +18,8 @@ module Influx
         stripe_sub.save
 
         @subscription.cancel_at_period_end = false
-        @subscription.plan = plan
+        @subscription.plan = new_plan
         @subscription.save!
-
       rescue RuntimeError, Stripe::StripeError => e
         @subscription.errors[:base] << e.message
       end
@@ -28,6 +27,9 @@ module Influx
       @subscription
     end
 
+    private
+
+    # @return [Stripe::Subscription]
     def fetch_stripe_subscription
       customer = Stripe::Customer.retrieve(@subscription.stripe_customer_id)
       customer.subscriptions.retrieve(@subscription.stripe_id)

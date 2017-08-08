@@ -4,7 +4,7 @@ module Influx
   describe CreatePlan do
     describe '#call' do
       it 'creates a plan' do
-        params = attributes_for(:influx_plan)
+        params = attributes_for(:plan)
         plan = Influx::CreatePlan.call(params)
         expect(plan.name).to eq params[:name]
         expect(plan.amount).to eq params[:amount]

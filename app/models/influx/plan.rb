@@ -10,7 +10,7 @@ module Influx
     has_many :subscriptions, class_name: 'Influx::Subscription'
 
     def create_stripe_plan
-      Influx::CreateStripePlan.call(plan: self)
+      Influx::ActivateStripePlan.call(plan: self)
     end
   end
 end

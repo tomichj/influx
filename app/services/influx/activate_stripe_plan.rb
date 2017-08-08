@@ -1,8 +1,5 @@
 module Influx
-  #
-  # Create or load a stripe plan.
-  #
-  class CreateStripePlan
+  class ActivateStripePlan
     include Influx::Service
 
     def initialize(plan:)

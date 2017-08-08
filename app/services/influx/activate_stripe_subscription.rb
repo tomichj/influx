@@ -2,8 +2,10 @@ module Influx
   class ActivateStripeSubscription
     include Influx::Service
 
+    #
     # Called by subscription.activate!
     # subscription.activate! sets state to active after this method completes
+    #
     def initialize(subscription:)
       @subscription = subscription
       @subscriber = @subscription.subscriber
