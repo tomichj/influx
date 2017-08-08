@@ -15,7 +15,6 @@ module Influx
     def call
       begin
         stripe_customer = create_or_load_stripe_customer
-        stripe_customer_source(stripe_customer)
         stripe_subscription = create_stripe_subscription(stripe_customer)
         card = stripe_customer.sources.data.first
         update_influx_subscription(stripe_subscription, card)
@@ -51,11 +50,13 @@ module Influx
     end
 
     def create_or_load_stripe_customer
-      if @subscriber.stripe_customer_id.blank?
-        create_stripe_customer
-      else
-        load_stripe_customer
-      end
+      stripe_customer = if @subscriber.stripe_customer_id.blank?
+               create_stripe_customer
+             else
+               load_stripe_customer
+             end
+      stripe_customer_source(stripe_customer)
+      stripe_customer
     end
 
     def create_stripe_customer

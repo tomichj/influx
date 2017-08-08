@@ -2,6 +2,9 @@ module Influx
   class CancelSubscription
     include Influx::Service
 
+    # Cancel the Stripe subscription and mark the Influx::Subscription cancelled.
+    #
+    # @param [Influx::Subscription]
     def initialize(subscription:)
       @subscription = subscription
     end
