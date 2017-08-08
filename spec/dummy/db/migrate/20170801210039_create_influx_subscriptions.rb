@@ -8,7 +8,7 @@ class CreateInfluxSubscriptions < migration_base_class()
       t.integer :subscriber_id, null: false
       t.string :stripe_customer_id
       t.string :email
-      t.timestamp :start
+      t.timestamp :started_at
       t.boolean   :cancel_at_period_end
       t.timestamp :current_period_start
       t.timestamp :current_period_end

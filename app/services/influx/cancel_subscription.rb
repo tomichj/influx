@@ -2,7 +2,7 @@ module Influx
   class CancelSubscription
     include Influx::Service
 
-    def initialize(subscription)
+    def initialize(subscription:)
       @subscription = subscription
     end
 

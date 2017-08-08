@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 20170801220139) do
     t.integer "subscriber_id", null: false
     t.string "stripe_customer_id"
     t.string "email"
-    t.datetime "start"
+    t.datetime "started_at"
     t.boolean "cancel_at_period_end"
     t.datetime "current_period_start"
     t.datetime "current_period_end"

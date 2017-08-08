@@ -16,7 +16,7 @@ module Influx
       state :cancelled
       state :errored
 
-      event :activate, after: :start_subscription do
+      event :activate do
         transitions from: :pending, to: :active
       end
 
@@ -38,14 +38,11 @@ module Influx
       trial_end < Time.now
     end
 
-    def start_subscription
-      Influx::StartSubscription.call(self)
-    end
-
     # Update the subscription's notion of itself with the info from Stripe.
     def sync_with!(stripe_subscription)
       self.current_period_start = Time.at(stripe_subscription.current_period_start)
       self.current_period_end   = Time.at(stripe_subscription.current_period_end)
+      self.started_at           = Time.at(stripe_subscription.start) if stripe_subscription.start
       self.ended_at             = Time.at(stripe_subscription.ended_at) if stripe_subscription.ended_at
       self.trial_start          = Time.at(stripe_subscription.trial_start) if stripe_subscription.trial_start
       self.trial_end            = Time.at(stripe_subscription.trial_end) if stripe_subscription.trial_end
