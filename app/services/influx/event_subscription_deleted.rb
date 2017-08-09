@@ -8,7 +8,7 @@ module Influx
   class EventSubscriptionDeleted
     include Influx::Service
 
-    def intialize(event:)
+    def initialize(event)
       @event = event
     end
 

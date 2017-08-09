@@ -19,12 +19,11 @@ module Influx
       end
     end
 
-
     initializer :configure_subscription_listeners do |app|
       Influx.configure do |config|
         config.subscribe 'invoice.payment_succeeded',     Influx::EventPaymentSucceeded
-        # config.subscribe 'invoice.payment_failed',        Influx::EventPaymentFailed
-        config.subscribe 'customer.subscription.updated', Influx::EventSyncSubscription
+        config.subscribe 'invoice.payment_failed',        Influx::EventPaymentFailed
+        config.subscribe 'customer.subscription.updated', Influx::EventSubscriptionUpdated
         config.subscribe 'customer.subscription.deleted', Influx::EventSubscriptionDeleted
       end
     end

@@ -5,10 +5,10 @@ module Influx
   #
   # Event name: 'customer.subscription.updated'
   #
-  class EventSyncSubscription
+  class EventSubscriptionUpdated
     include Influx::Service
 
-    def initialize(event:)
+    def initialize(event)
       @event = event
     end
 

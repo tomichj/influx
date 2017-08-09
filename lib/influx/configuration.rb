@@ -48,6 +48,13 @@ module Influx
     # @return [String]
     attr_accessor :default_currency
 
+    # The event receiver class name.
+    #
+    # Defaults to 'Influx::EventRetriever'
+    #
+    # @return [String]
+    attr_accessor :event_retriever
+
     def initialize
       @subscriber = '::User'
       @routes = true
@@ -55,11 +62,17 @@ module Influx
       @secret_key = EnvWrapper.new('STRIPE_SECRET_KEY')
       @support_email = 'sales@example.com'
       @default_currency = 'usd'
+      @event_retriever = 'Influx::EventRetriever'
     end
 
     def setup_stripe
       Stripe.api_version = ENV['STRIPE_API_VERSION'] || '2015-06-15'
       Stripe.api_key = secret_key
+      StripeEvent.event_retriever = event_retriever
+    end
+
+    def event_retriever
+      @event_retriever.constantize.new
     end
 
     def secret_key=(key)

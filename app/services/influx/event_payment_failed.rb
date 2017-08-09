@@ -8,8 +8,12 @@ module Influx
   class EventPaymentFailed
     include Influx::Invoicing
 
-    def call(event)
-      stripe_invoice = event.data.object
+    def initialize(event)
+      @event = event
+    end
+
+    def call
+      stripe_invoice = @event.data.object
       return unless stripe_invoice.charge
 
       invoice = invoice_for(stripe_invoice)
