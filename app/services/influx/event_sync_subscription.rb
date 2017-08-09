@@ -1,4 +1,10 @@
 module Influx
+
+  #
+  # A customer's subscription was updated by Stripe.
+  #
+  # Event name: 'customer.subscription.updated'
+  #
   class EventSyncSubscription
     include Influx::Service
 

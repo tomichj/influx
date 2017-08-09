@@ -1,4 +1,10 @@
 module Influx
+
+  #
+  # Handles a notification from Stripe that the user has canceled their subscription.
+  #
+  # event name: 'customer.subscription.deleted'
+  #
   class EventSubscriptionDeleted
     include Influx::Service
 
