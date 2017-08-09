@@ -7,7 +7,7 @@ class CreateInfluxSubscriptions < migration_base_class()
       t.references :influx_plan, index: true, null: false
       t.integer :subscriber_id, null: false
       t.string :stripe_customer_id
-      t.string :email
+      t.string :email, limit: 191
       t.timestamp :started_at
       t.boolean   :cancel_at_period_end
       t.timestamp :current_period_start

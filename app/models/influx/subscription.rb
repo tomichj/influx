@@ -4,11 +4,11 @@ module Influx
   class Subscription < ActiveRecord::Base
     include AASM
 
-    validates_presence_of :plan
-    validates_presence_of :subscriber
-
     belongs_to :plan, class_name: 'Influx::Plan', foreign_key: 'influx_plan_id'
     belongs_to :subscriber, class_name: Influx.configuration.subscriber
+
+    validates_presence_of :plan
+    validates_presence_of :subscriber
 
     aasm column: 'state' do
       state :pending, initial: true
