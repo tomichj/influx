@@ -1,4 +1,8 @@
 module Influx
+
+  #
+  # Behavior used by invoicing events.
+  #
   module Invoicing
     extend ActiveSupport::Concern
 

@@ -1,7 +1,12 @@
 module Influx
+
+  #
+  # Activate or fetch the Stripe Plan for a given Influx Plan.
+  #
   class ActivateStripePlan
     include Influx::Service
 
+    # @param [Influx::Plan]
     def initialize(plan:)
       @plan = plan
     end

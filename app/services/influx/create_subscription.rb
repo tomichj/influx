@@ -1,8 +1,11 @@
 module Influx
+
+  #
+  # Create an Influx::Subscription.
+  #
   class CreateSubscription
     include Influx::Service
 
-    # Create a subscription.
     #
     # Consider splitting into creation of the Influx::Subscription and then
     # queuing up a Job to fire off the subscription request to Stripe.

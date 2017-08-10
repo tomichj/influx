@@ -1,7 +1,13 @@
 module Influx
+
+  #
+  # Change the plan for a subscription.
+  #
   class ChangeSubscriptionPlan
     include Influx::Service
 
+    # @param [Influx::Subscription]
+    # @param [Influx::Plan]
     def initialize(subscription:, new_plan:)
       @subscription = subscription
       @new_plan = new_plan
