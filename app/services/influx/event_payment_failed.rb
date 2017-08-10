@@ -6,6 +6,7 @@ module Influx
   # event name: 'invoice.payment_failed'
   #
   class EventPaymentFailed
+    include Influx::Service
     include Influx::Invoicing
 
     def initialize(event)
@@ -19,6 +20,7 @@ module Influx
       invoice = invoice_for(stripe_invoice)
       invoice.save!
       invoice.fail!
+      invoice
     end
   end
 end

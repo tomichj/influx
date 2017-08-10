@@ -45,7 +45,7 @@ module Influx
                                               subscription: @subscription.stripe_id, charge: stripe_charge)
         expect{EventPaymentSucceeded.call(event)}.to change { InvoicePayment.count }.by(1)
       end
-      
+
     end
   end
 end

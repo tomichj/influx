@@ -6,8 +6,8 @@ module Influx
   # Event name: 'invoice.payment_succeeded'
   #
   class EventPaymentSucceeded
-    include Influx::Invoicing
     include Influx::Service
+    include Influx::Invoicing
 
     def initialize(event)
       @event = event
@@ -20,6 +20,7 @@ module Influx
       invoice = invoice_for(stripe_invoice)
       invoice.save!
       invoice.finish!
+      invoice
     end
   end
 end
