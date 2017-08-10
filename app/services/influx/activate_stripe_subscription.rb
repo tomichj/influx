@@ -18,6 +18,7 @@ module Influx
         stripe_subscription = create_stripe_subscription(stripe_customer)
         card = stripe_customer.sources.data.first
         update_influx_subscription(stripe_subscription, card)
+        @subscription.activate
         @subscription.save!
       rescue Stripe::StripeError => e
         @subscription.update_attributes(error: e.message)
@@ -46,7 +47,6 @@ module Influx
       @subscription.stripe_customer_id = @subscriber.stripe_customer_id
       @subscription.stripe_id = stripe_subscription.id
       @subscription.sync_with!(stripe_subscription)
-      @subscription.activate
     end
 
     def create_or_load_stripe_customer
