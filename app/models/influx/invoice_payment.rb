@@ -7,7 +7,7 @@ module Influx
     belongs_to :subscriber, class_name: Influx.configuration.subscriber
 
     validates_presence_of :email
-    validates_presence_of :stripe_token
+    validates_presence_of :stripe_id
     validates_presence_of :currency
     validates_presence_of :subscriber
     validates_presence_of :subscription
@@ -30,11 +30,11 @@ module Influx
     private
 
     def instrument_finish
-      Influx.instrument('influx.invoice.payment.finished', self)
+      Influx.configuration.instrument('influx.invoice.payment.finished', self)
     end
 
     def instrument_fail
-      Influx.instrument('influx.invoice.payment.failed', self)
+      Influx.configuration.instrument('influx.invoice.payment.failed', self)
     end
   end
 end

@@ -7,6 +7,7 @@ module Influx
   #
   class EventPaymentSucceeded
     include Influx::Invoicing
+    include Influx::Service
 
     def initialize(event)
       @event = event

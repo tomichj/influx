@@ -7,7 +7,7 @@ module Influx
       sync_to_stripe_subscription(subscription, stripe_invoice)
 
       invoice = create_invoice(subscription, stripe_invoice)
-      update_invoice_with_charge(invoice)
+      update_invoice_with_charge(invoice, stripe_invoice)
 
       invoice
     end
@@ -31,9 +31,8 @@ module Influx
       end
     end
 
-    def update_invoice_with_charge(invoice)
-      stripe_charge = Stripe::Charge.retrieve(stripe_invoice.charge)
-
+    def update_invoice_with_charge(invoice, stripe_invoice)
+      stripe_charge = Stripe::Charge.retrieve(stripe_invoice.charge.id)
       invoice.error      = stripe_charge.failure_message
       invoice.stripe_id  = stripe_charge.id
       invoice.card_type  = stripe_charge.source.brand

@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20170802220139) do
 
-  create_table "influx_invoice_payment", force: :cascade do |t|
+  create_table "influx_invoice_payments", force: :cascade do |t|
     t.string "email", limit: 191
     t.integer "subscriber_id"
     t.integer "subscription_id"
@@ -24,15 +24,14 @@ ActiveRecord::Schema.define(version: 20170802220139) do
     t.datetime "updated_at"
     t.string "state"
     t.string "stripe_id"
-    t.string "stripe_token"
     t.string "card_last4"
     t.date "card_expiration"
     t.string "card_type"
     t.text "error"
     t.text "customer_address"
     t.text "business_address"
-    t.index ["email"], name: "index_influx_invoice_payment_on_email"
-    t.index ["subscription_id"], name: "index_influx_invoice_payment_on_subscription_id"
+    t.index ["email"], name: "index_influx_invoice_payments_on_email"
+    t.index ["subscription_id"], name: "index_influx_invoice_payments_on_subscription_id"
   end
 
   create_table "influx_plans", force: :cascade do |t|
