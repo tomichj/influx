@@ -1,6 +1,21 @@
 require 'aasm'
 
 module Influx
+
+  #
+  # A subscription.
+  #
+  # Can be in several states:
+  # * pending
+  # * active
+  # * canceled
+  # * errorred
+  #
+  # The following events are fired:
+  # * influx.subscription.active - when account is activated
+  # * influx.subscription.cancel - when account is canceled
+  # * influx.subscription.fail - when an error occurs processing the subscription
+  #
   class Subscription < ActiveRecord::Base
     include AASM
 
@@ -16,15 +31,15 @@ module Influx
       state :canceled
       state :errored
 
-      event :activate do
+      event :activate, after: :instrument_activate do
         transitions from: :pending, to: :active
       end
 
-      event :cancel do
+      event :cancel, after: :instrument_canceled do
         transitions from: :active, to: :canceled
       end
 
-      event :fail do
+      event :fail, after: :instrument_failed do
         transitions from: :pending, to: :errored
       end
     end
@@ -52,5 +67,20 @@ module Influx
       self.save!
       self
     end
+
+    private
+
+    def instrument_activate
+      Influx.configuration.instrument('influx.subscription.active', self)
+    end
+
+    def instrument_canceled
+      Influx.configuration.instrument('influx.subscription.cancel', self)
+    end
+
+    def instrument_failed
+      Influx.configuration.instrument('influx.subscription.fail', self)
+    end
+
   end
 end
