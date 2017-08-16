@@ -26,5 +26,30 @@ module Influx
         expect(subscription.stripe_status).to eq 'active'
       end
     end
+
+    describe 'trialing' do
+      context 'trial not end' do
+        before(:each) do
+          @subscription = create(:subscription, stripe_status: 'trialing', trial_end: Time.now + 5.days)
+        end
+        it 'is still trial' do
+          expect(@subscription.is_trial?).to be_truthy
+        end
+        it 'is not expired' do
+          expect(@subscription.trial_expired?).to be_falsey
+        end
+      end
+      context 'trial end reached' do
+        before(:each) do
+          @subscription = create(:subscription, stripe_status: 'trialing', trial_end: Time.now - 5.days)
+        end
+        it 'is still trial' do
+          expect(@subscription.is_trial?).to be_truthy
+        end
+        it 'is expired' do
+          expect(@subscription.trial_expired?).to be_truthy
+        end
+      end
+    end
   end
 end
