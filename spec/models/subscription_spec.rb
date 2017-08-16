@@ -30,7 +30,7 @@ module Influx
     describe 'trialing' do
       context 'trial not end' do
         before(:each) do
-          @subscription = create(:subscription, stripe_status: 'trialing', trial_end: Time.now + 5.days)
+          @subscription = build(:subscription, stripe_status: 'trialing', trial_end: Time.now + 5.days)
         end
         it 'is still trial' do
           expect(@subscription.is_trial?).to be_truthy
@@ -41,7 +41,7 @@ module Influx
       end
       context 'trial end reached' do
         before(:each) do
-          @subscription = create(:subscription, stripe_status: 'trialing', trial_end: Time.now - 5.days)
+          @subscription = build(:subscription, stripe_status: 'trialing', trial_end: Time.now - 5.days)
         end
         it 'is still trial' do
           expect(@subscription.is_trial?).to be_truthy
@@ -49,6 +49,24 @@ module Influx
         it 'is expired' do
           expect(@subscription.trial_expired?).to be_truthy
         end
+      end
+    end
+
+    describe 'events' do
+      it 'fires active event on activate' do
+        subscription = build(:subscription, state: 'pending')
+        expect(Influx.configuration).to receive(:instrument).with('influx.subscription.active', subscription)
+        subscription.activate!
+      end
+      it 'fires cancel event on canceled' do
+        subscription = build(:subscription, state: 'active')
+        expect(Influx.configuration).to receive(:instrument).with('influx.subscription.cancel', subscription)
+        subscription.cancel!
+      end
+      it 'fires cancel event on canceled' do
+        subscription = build(:subscription, state: 'pending')
+        expect(Influx.configuration).to receive(:instrument).with('influx.subscription.fail', subscription)
+        subscription.fail!
       end
     end
   end
