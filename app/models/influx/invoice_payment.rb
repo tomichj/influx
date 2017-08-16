@@ -1,3 +1,5 @@
+require 'aasm'
+
 module Influx
   class InvoicePayment < ActiveRecord::Base
     include AASM
@@ -13,7 +15,7 @@ module Influx
     validates_presence_of :subscription
     validates_presence_of :plan
 
-    aasm column: 'state', skip_validation_on_save: true do
+    aasm column: 'state' do
       state :pending, initial: true
       state :finished
       state :errored

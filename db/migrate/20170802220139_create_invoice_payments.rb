@@ -10,8 +10,6 @@ class CreateInvoicePayments < migration_base_class()
       t.integer  'amount'
       t.integer  'fee_amount'
       t.string   'currency'
-      t.datetime 'created_at'
-      t.datetime 'updated_at'
       t.string   'state'
       t.string   'stripe_id'
       t.string   'card_last4'
