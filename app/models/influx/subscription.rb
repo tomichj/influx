@@ -3,13 +3,13 @@ require 'aasm'
 module Influx
 
   #
-  # A subscription.
+  # A subscription, requires a plan and a subscriber.
   #
   # Can be in several states:
-  # * pending
-  # * active
-  # * canceled
-  # * errorred
+  # * pending - Stripe subscription not yet started
+  # * active - Stripe subscription is started
+  # * canceled - Stripe subscription is canceled
+  # * errorred - attempted to start Stripe subscription, but it failed
   #
   # The following events are fired:
   # * influx.subscription.active - when account is activated
@@ -57,7 +57,6 @@ module Influx
     def sync_with!(stripe_subscription)
       self.current_period_start = Time.at(stripe_subscription.current_period_start)
       self.current_period_end   = Time.at(stripe_subscription.current_period_end)
-      # self.started_at           = Time.at(stripe_subscription.start) if stripe_subscription.start
       self.ended_at             = Time.at(stripe_subscription.ended_at) if stripe_subscription.ended_at
       self.trial_start          = Time.at(stripe_subscription.trial_start) if stripe_subscription.trial_start
       self.trial_end            = Time.at(stripe_subscription.trial_end) if stripe_subscription.trial_end
