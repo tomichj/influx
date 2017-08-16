@@ -9,6 +9,5 @@ module Influx
         new(*args).call
       end
     end
-
   end
 end

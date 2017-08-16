@@ -4,7 +4,6 @@ module Influx
   describe ActivateStripeSubscription do
     let(:token){ StripeMock.generate_card_token({}) }
     describe '#call' do
-
       it 'creates a customer' do
         subscription = create(:subscription, stripe_token: token)
         ActivateStripePlan.call(plan: subscription.plan)

@@ -57,13 +57,14 @@ module Influx
     def sync_with!(stripe_subscription)
       self.current_period_start = Time.at(stripe_subscription.current_period_start)
       self.current_period_end   = Time.at(stripe_subscription.current_period_end)
-      self.started_at           = Time.at(stripe_subscription.start) if stripe_subscription.start
+      # self.started_at           = Time.at(stripe_subscription.start) if stripe_subscription.start
       self.ended_at             = Time.at(stripe_subscription.ended_at) if stripe_subscription.ended_at
       self.trial_start          = Time.at(stripe_subscription.trial_start) if stripe_subscription.trial_start
       self.trial_end            = Time.at(stripe_subscription.trial_end) if stripe_subscription.trial_end
       self.canceled_at          = Time.at(stripe_subscription.canceled_at) if stripe_subscription.canceled_at
       self.stripe_status        = stripe_subscription.status
       self.cancel_at_period_end = stripe_subscription.cancel_at_period_end
+      self.amount               = stripe_subscription.plan.amount
       self.save!
       self
     end

@@ -2,10 +2,11 @@ require 'spec_helper'
 
 module Influx
   describe EventPaymentSucceeded do
+
     describe '#call' do
       before(:each) do
-        @token = StripeMock.generate_card_token({})
-        @subscription = create(:subscription)
+        token = StripeMock.generate_card_token({})
+        @subscription = create(:subscription, stripe_token: token)
         ActivateStripePlan.call(plan: @subscription.plan)
         ActivateStripeSubscription.call(subscription: @subscription)
       end
@@ -27,6 +28,7 @@ module Influx
       end
 
       it 'creates an influx invoice payment with a fee' do
+        puts @subscription.inspect
         stripe_customer = Stripe::Customer.retrieve(@subscription.stripe_customer_id)
         stripe_charge = Stripe::Charge.create(amount: 100, currency: 'usd', customer: stripe_customer.id)
         allow(stripe_charge).to receive(:fee).and_return(1000)

@@ -5,7 +5,7 @@ FactoryGirl.define do
     amount 5000
     interval 'month'
     interval_count 1
-    trial_period_days 1
+    # trial_period_days 1
     published false
   end
 end

@@ -4,8 +4,8 @@ module Influx
   describe EventPaymentFailed do
     describe '#call' do
       before(:each) do
-        @token = StripeMock.generate_card_token({})
-        @subscription = create(:subscription)
+        token = StripeMock.generate_card_token({})
+        @subscription = create(:subscription, stripe_token: token)
         ActivateStripePlan.call(plan: @subscription.plan)
         ActivateStripeSubscription.call(subscription: @subscription)
       end

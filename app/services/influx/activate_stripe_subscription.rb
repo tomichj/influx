@@ -3,7 +3,7 @@ module Influx
   #
   # Activate a Stripe::Subscription for the given Influx Subscription.
   #
-  # The Stripe::Customer that subscribes is loaded or created as a side affect.
+  # The Stripe::Customer (subscriber) is loaded or created as a side affect.
   #
   class ActivateStripeSubscription
     include Influx::Service
@@ -52,12 +52,11 @@ module Influx
     end
 
     def create_or_load_stripe_customer
-      stripe_customer =
-        if @subscriber.stripe_customer_id.blank?
-          create_stripe_customer
-        else
-          load_stripe_customer
-        end
+      stripe_customer = if @subscriber.stripe_customer_id.blank?
+                          create_stripe_customer
+                        else
+                          load_stripe_customer
+                        end
       stripe_customer_source(stripe_customer)
       stripe_customer
     end
