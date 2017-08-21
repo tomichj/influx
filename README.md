@@ -1,35 +1,97 @@
 # Influx
 
-TODO: Delete this and the text above, and describe your gem
+Subscriptions with Stripe for Rails applications.
+
+
+## Dependencies
+
+Influx 
+
 
 ## Installation
 
-Add this line to your application's Gemfile:
+To get started, add Influx to your `Gemfile` and run `bundle install` to install it:
 
 ```ruby
 gem 'influx'
 ```
 
-And then execute:
+Run the installer and then the migrations:
 
-    $ bundle
+    $ rails generate influx:install
+    $ rake db:migrate
 
-Or install it yourself as:
+The Influx install generator assumes your subscriber model is `::User`. You may specify an alternate class with the
+`--subscriber` flag:
 
-    $ gem install influx
+    $ rails generate influx::install --subscriber MyApp::Profile
+
+
+## Configuration
+
+The `influx::install` generator installs the Influx initializer at `config/initializers/influx.rb`. The initializer
+contains an Influx configuration that uses sensible defaults but offers several options.
+
+### Subscriber class
+
+Influx assumes your subscriber model is a class named `::User`. If you specify a subscriber class with the install
+generator, it will be set in the initializer's configuration:
+
+```ruby
+Influx.configure do |config|
+  config.subscriber = 'MyApp::Profile'
+end
+```
+
+
+### Stripe Keys
+
+The default configuration reads Stripe keys from the environment, via `ENV['STRIPE_SECRET_KEY']` and 
+`ENV['STRIPE_PUBLISHABLE_KEY']`. Set your keys in your environment before starting rails. 
+
+It's not recommended, but you can instead set the keys yourself in the Influx initializer:
+
+```ruby
+Influx.configure do |config|
+  config.secret_key = 'sk_test_1234567890'
+  config.publishable_key = 'pk_test_1234567890'
+end
+```
+
+
+### Default Currency
+
+The default currency defaults to 'usd'. You can change to some other currency with the configuration
+option `default_currency` in the initializer config:
+
+```ruby
+Influx.configure do |config|
+  config.default_currency = 'eur'
+end
+```
+
+See Stripe's [Supported Currencies](https://stripe.com/docs/currencies) page for more information.
+
+
+### Event Retriever
+
+Influx uses the [stripe_event](https://github.com/integrallis/stripe_event) gem to retrieve Stripe events.
+Influx ships with an EventRetriever implementation that records all events seen and will not retrieve an event
+with the same id a second time.
+
+You can specify your own event retriever in the initializer config:
+
+```ruby
+Influx.configure do |config|
+  config.event_retriever = 'MyApp::MyCustomEventRetriever'
+end
+```
+
 
 ## Usage
 
-TODO: Write usage instructions here
+Influx primarily provides models and services.
 
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. 
-You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, 
-update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git 
-tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
