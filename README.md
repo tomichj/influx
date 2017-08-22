@@ -6,6 +6,10 @@ Influx does not contain a UI, just models and services to construct a subscripti
 
 Influx borrows heavily from payola, koudoku, and especially the book 'Mastering Modern Payments'.
 
+Influx does not yet support coupons, nor some features of subscriptions such as "quantity". Support 
+is coming soon.
+
+
 ## Dependencies
 
 Influx requires:
