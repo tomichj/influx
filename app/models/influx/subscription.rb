@@ -22,8 +22,12 @@ module Influx
     belongs_to :plan, class_name: 'Influx::Plan', foreign_key: 'influx_plan_id'
     belongs_to :subscriber, class_name: Influx.configuration.subscriber
 
+    has_many :invoices, class_name: 'Influx::InvoicePayment'
+
     validates_presence_of :plan
     validates_presence_of :subscriber
+    validates_presence_of :email
+
 
     aasm column: 'state' do
       state :pending, initial: true
@@ -66,6 +70,10 @@ module Influx
       self.amount               = stripe_subscription.plan.amount
       self.save!
       self
+    end
+
+    def activate_stripe_subscription
+      Influx::ActivateStripeSubscription.call(subscription: self)
     end
 
     private

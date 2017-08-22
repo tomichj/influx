@@ -1,7 +1,10 @@
 # Influx
 
-Subscriptions with Stripe for Rails applications.
+Subscriptions with Stripe for Rails applications. 
 
+Influx does not contain a UI, just models and services to construct a subscription service.
+
+Influx borrows heavily from payola, koudoku, and especially the book 'Mastering Modern Payments'.
 
 ## Dependencies
 
@@ -98,7 +101,6 @@ Influx primarily provides models and services.
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/influx. This project 
 is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to 
 the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
-
 
 ## License
 

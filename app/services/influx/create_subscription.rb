@@ -1,7 +1,7 @@
 module Influx
 
   #
-  # Create an Influx::Subscription.
+  # Create an Influx::Subscription and activate it's corresponding Stripe subscription.
   #
   class CreateSubscription
     include Influx::Service
@@ -31,6 +31,7 @@ module Influx
         s.trial_end = @options[:trial_end] if @options[:trial_end].present?
       end
       subscription.save
+      subscription.activate_stripe_subscription
       subscription
     end
   end

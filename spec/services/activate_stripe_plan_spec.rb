@@ -3,7 +3,7 @@ require 'spec_helper'
 module Influx
   describe ActivateStripePlan do
     describe '#call' do
-      it 'creates the stripe account' do
+      it 'creates the stripe plan' do
         plan = create(:plan)
         expect(Stripe::Plan).to receive(:create)
         Influx::ActivateStripePlan.call(plan: plan)
