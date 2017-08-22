@@ -8,7 +8,9 @@ Influx borrows heavily from payola, koudoku, and especially the book 'Mastering 
 
 ## Dependencies
 
-Influx 
+Influx requires:
+* a subscriber model (Influx defaults to `::User`) with an `email` attribute
+* Stripe keys
 
 
 ## Installation
@@ -34,6 +36,7 @@ The Influx install generator assumes your subscriber model is `::User`. You may 
 
 The `influx::install` generator installs the Influx initializer at `config/initializers/influx.rb`. The initializer
 contains an Influx configuration that uses sensible defaults but offers several options.
+
 
 ### Subscriber class
 
@@ -93,7 +96,12 @@ end
 
 ## Usage
 
-Influx primarily provides models and services.
+Influx provides models and services.
+
+* Create plans from the console using `Influx::CreatePlan`.
+* Offer subscriptions and sign users up using `Influx::CreateSubscription`.
+* Change subscription plans with `Influx::ChangeSubscriptionPlan`.
+* Cancel subscriptions with `Influx::CancelSubscription`.
 
 
 ## Contributing
