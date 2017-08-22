@@ -38,7 +38,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec-rails'
   spec.add_development_dependency 'factory_girl_rails'
   spec.add_development_dependency 'stripe-ruby-mock', '~> 2.3.1'
-
-  # spec.add_development_dependency 'rake'
-  # spec.add_development_dependency 'bundler'
 end
