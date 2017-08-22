@@ -18,7 +18,7 @@ module Influx
     # which will also set `config.routes = false`.
     #
     # @return [Boolean]
-    attr_accessor :routes
+    # attr_accessor :routes
 
     # Stripe secret key.
     #
@@ -39,7 +39,7 @@ module Influx
     # Defaults to 'sales@example.com'
     #
     # @return [String]
-    attr_accessor :support_email
+    # attr_accessor :support_email
 
     # Currency you do business in.
     #
@@ -57,10 +57,10 @@ module Influx
 
     def initialize
       @subscriber = '::User'
-      @routes = true
+      # @routes = true
       @publishable_key = EnvWrapper.new('STRIPE_PUBLISHABLE_KEY')
       @secret_key = EnvWrapper.new('STRIPE_SECRET_KEY')
-      @support_email = 'sales@example.com'
+      # @support_email = 'sales@example.com'
       @default_currency = 'usd'
       @event_retriever = 'Influx::EventRetriever'
     end
@@ -81,9 +81,9 @@ module Influx
     end
 
     # @return [Boolean] are Influx's built-in routes enabled?
-    def routes_enabled?
-      @routes
-    end
+    # def routes_enabled?
+    #   @routes
+    # end
 
     # The subscriber model's class.
     #
