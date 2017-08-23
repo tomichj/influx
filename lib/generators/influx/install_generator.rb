@@ -23,6 +23,10 @@ module Influx
       end
     end
 
+    def install_route
+      route "mount StripeEvent::Engine => '/stripe/events'"
+    end
+
     private
     def subscriber_class_name
       options[:subscriber] ? options[:subscriber].classify : '::User'
