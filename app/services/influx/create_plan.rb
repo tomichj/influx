@@ -6,6 +6,9 @@ module Influx
   # If the Influx plan is created but Stripe fails,
   # the errors will be set on the returned Influx::Plan.
   #
+  # Example:
+  #   Influx::CreatePlan.call(stripe_id: 'test_plan', name: 'The Test Plan', amount: 5000, interval: 'month',
+  #                           interval_count: 1, trial_period_days: 30, published: false)
   class CreatePlan
     include Influx::Service
 
@@ -35,4 +38,4 @@ module Influx
   end
 end
 
-# plan = Influx::CreatePlan.call(stripe_id: 'test_plan', name: 'The Test Plan', amount: 5000, interval: 'month', interval_count: 1, trial_period_days: 30, published: false)
+# plan = Influx::CreatePlan.call(stripe_id: 'test_plan', name: 'The Test Plan', amount: 5000, interval: 'month', interval_count: 1, trial_period_days: 0, published: false)
