@@ -12,6 +12,8 @@ module Influx
     included do
       has_one :subscription, class_name: 'Influx::Subscription', foreign_key: 'subscriber_id'
       has_many :invoice_payments, class_name: 'Influx::InvoicePayment', foreign_key: 'subscriber_id'
+
+      scope :most_recent, -> { order("created_at desc").limit(1).first }
     end
 
     def subscription_active?
