@@ -33,8 +33,11 @@ module Influx
     private
 
     def create_stripe_subscription(stripe_customer)
-      stripe_subscription_params = { plan: @subscription.plan.stripe_id }
-      stripe_subscription_params[:trial_end] = @subscription.trial_end if @subscription.trial_end.present?
+      stripe_subscription_params = {
+        plan: @subscription.plan.stripe_id,
+        quantity: 1
+      }
+      stripe_subscription_params[:trial_end] = @subscription.trial_end.to_i if @subscription.trial_end.present?
       stripe_customer.subscriptions.create(stripe_subscription_params)
     end
 

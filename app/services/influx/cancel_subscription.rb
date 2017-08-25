@@ -12,7 +12,8 @@ module Influx
     end
 
     def call
-      stripe_subscription = Stripe::Subscription.retrieve(@subscription.stripe_id)
+      stripe_customer = Stripe::Customer.retrieve(@subscription.stripe_customer_id)
+      stripe_subscription = stripe_customer.subscriptions.retrieve(@subscription.stripe_id)
       stripe_subscription.delete if stripe_subscription
       @subscription.cancel!
     end
