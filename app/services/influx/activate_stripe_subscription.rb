@@ -21,6 +21,7 @@ module Influx
         card = stripe_customer.sources.data.first
         update_influx_subscription(stripe_subscription, card)
         @subscription.activate
+        @subscription.started_at = Time.current
         @subscription.save!
       rescue Stripe::StripeError => e
         @subscription.update_attributes(error: e.message)

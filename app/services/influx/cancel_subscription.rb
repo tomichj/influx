@@ -15,6 +15,7 @@ module Influx
       stripe_customer = Stripe::Customer.retrieve(@subscription.stripe_customer_id)
       stripe_subscription = stripe_customer.subscriptions.retrieve(@subscription.stripe_id)
       stripe_subscription.delete if stripe_subscription
+      @subscription.ended_at = Time.current
       @subscription.cancel!
     end
   end

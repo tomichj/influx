@@ -57,6 +57,10 @@ module Influx
       trial_end < Time.now
     end
 
+    def card_info?
+      card_last4 && card_type && card_expiration
+    end
+
     # Update the subscription's notion of itself with the info from Stripe.
     def sync_with!(stripe_subscription)
       self.current_period_start = Time.at(stripe_subscription.current_period_start)
