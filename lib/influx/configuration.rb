@@ -66,9 +66,9 @@ module Influx
     end
 
     def setup_stripe
+      ::StripeEvent.event_retriever = event_retriever
       Stripe.api_version = ENV['STRIPE_API_VERSION'] || '2015-06-15'
       Stripe.api_key = secret_key
-      StripeEvent.event_retriever = event_retriever
     end
 
     def event_retriever
@@ -109,15 +109,15 @@ module Influx
     # Subscribe to a stripe event.
     #
     def subscribe(name, callable = Proc.new)
-      StripeEvent.subscribe(name, callable)
+      ::StripeEvent.subscribe(name, callable)
     end
 
     def instrument(name, object)
-      StripeEvent.backend.instrument(StripeEvent.namespace.call(name), object)
+      ::StripeEvent.backend.instrument(::StripeEvent.namespace.call(name), object)
     end
 
     def all(callable = Proc.new)
-      StripeEvent.all(callable)
+      ::StripeEvent.all(callable)
     end
   end
 

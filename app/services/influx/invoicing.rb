@@ -36,7 +36,7 @@ module Influx
     end
 
     def update_invoice_with_charge(invoice, stripe_invoice)
-      stripe_charge = Stripe::Charge.retrieve(stripe_invoice.charge.id)
+      stripe_charge = Stripe::Charge.retrieve(stripe_invoice.charge)
       invoice.error      = stripe_charge.failure_message
       invoice.stripe_id  = stripe_charge.id
       invoice.card_type  = stripe_charge.source.brand
