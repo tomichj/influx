@@ -2,7 +2,8 @@ require 'aasm'
 
 module Influx
   class InvoicePayment < ActiveRecord::Base
-    include AASM, UuidKey
+    include AASM
+    include Influx::UuidKey
 
     belongs_to :plan
     belongs_to :subscription
