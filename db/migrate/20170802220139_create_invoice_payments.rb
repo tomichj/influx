@@ -18,6 +18,8 @@ class CreateInvoicePayments < migration_base_class()
       t.string   'card_type'
       t.text     'error'
       t.datetime 'payment_at'
+      t.datetime 'period_start'
+      t.datetime 'period_end'
       t.timestamps
     end
 

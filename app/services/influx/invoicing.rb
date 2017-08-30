@@ -11,6 +11,7 @@ module Influx
       sync_to_stripe_subscription(subscription, stripe_invoice)
 
       invoice = create_invoice(subscription, stripe_invoice)
+      update_invoice_with_subscription_period(invoice, stripe_invoice)
       update_invoice_with_charge(invoice, stripe_invoice)
 
       invoice
@@ -34,6 +35,14 @@ module Influx
         s.currency = stripe_invoice.currency
         s.payment_at = Time.at(stripe_invoice.date) if stripe_invoice.date
       end
+    end
+
+    def update_invoice_with_subscription_period(invoice, stripe_invoice)
+      subscription_line = stripe_invoice.lines.find{|line_item| line_item.type == 'subscription'}
+      start_at = subscription_line.period[:start] if subscription_line
+      end_at = subscription_line.period[:end] if subscription_line
+      invoice.period_start = Time.at(start_at) if start_at
+      invoice.period_end   = Time.at(end_at) if end_at
     end
 
     def update_invoice_with_charge(invoice, stripe_invoice)

@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(version: 20170802220139) do
     t.string "card_type"
     t.text "error"
     t.datetime "payment_at"
+    t.datetime "period_start"
+    t.datetime "period_end"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["email"], name: "index_influx_invoice_payments_on_email"
