@@ -2,7 +2,7 @@ require 'aasm'
 
 module Influx
   class InvoicePayment < ActiveRecord::Base
-    include AASM
+    include AASM, UuidKey
 
     belongs_to :plan
     belongs_to :subscription
@@ -34,7 +34,6 @@ module Influx
 
     def instrument_finish
       Influx.configuration.instrument('influx.invoice.payment.finished', self)
-      # Rails.logger.info "instrument invoice finish, StripeEvent:" + StripeEvent.inspect
     end
 
     def instrument_fail

@@ -32,15 +32,19 @@ module Influx
         s.email = subscription.email
         s.amount = stripe_invoice.total
         s.currency = stripe_invoice.currency
+        s.payment_at = Time.at(stripe_invoice.date) if stripe_invoice.date
       end
     end
 
     def update_invoice_with_charge(invoice, stripe_invoice)
       stripe_charge = Stripe::Charge.retrieve(stripe_invoice.charge)
-      invoice.error      = stripe_charge.failure_message
-      invoice.stripe_id  = stripe_charge.id
-      invoice.card_type  = stripe_charge.source.brand
-      invoice.card_last4 = stripe_charge.source.last4
+      invoice.error           = stripe_charge.failure_message
+      invoice.stripe_id       = stripe_charge.id
+      invoice.card_type       = stripe_charge.source.brand
+      invoice.card_last4      = stripe_charge.source.last4
+      invoice.card_expiration = Date.parse("#{stripe_charge.source.exp_year}/#{stripe_charge.source.exp_month}/1")
+
+      Rails.logger.info "CARD EXPIRATION INFO, YEAR/MONTH: #{stripe_charge.source.exp_year}/#{stripe_charge.source.exp_month}"
 
       if stripe_charge.respond_to?(:fee)
         invoice.fee_amount = stripe_charge.fee
@@ -49,6 +53,5 @@ module Influx
         invoice.fee_amount = balance.fee
       end
     end
-
   end
 end

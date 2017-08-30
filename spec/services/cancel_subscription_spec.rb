@@ -15,11 +15,17 @@ module Influx
         expect(@subscription.reload.state).to eq 'canceled'
       end
 
-      it 'invokes delete on stripe subscription' do
-        stripe_subscription = Stripe::Subscription.retrieve(@subscription.stripe_id)
-        expect(stripe_subscription).to receive(:delete)
-        expect(Stripe::Subscription).to receive(:retrieve).and_return(stripe_subscription)
+      it 'deletes stripe subscription' do
+        expect(Stripe::Customer.retrieve(@subscription.stripe_customer_id).subscriptions.data.count).to be 1
         CancelSubscription.call(subscription: @subscription)
+        expect(Stripe::Customer.retrieve(@subscription.stripe_customer_id).subscriptions.data.count).to be 0
+      end
+
+      it 'does not change subscription state on error' do
+        custom_error = StandardError.new('Please knock first.')
+        StripeMock.prepare_error(custom_error, :get_customer)
+        expect { CancelSubscription.call(subscription: @subscription) }.to raise_error('Please knock first.')
+        expect(@subscription.reload.state).to eq 'active'
       end
     end
   end

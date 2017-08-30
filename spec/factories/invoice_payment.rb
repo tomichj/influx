@@ -4,6 +4,7 @@ FactoryGirl.define do
     association :subscriber
     association :plan
 
+    uuid  'fake-uuid'
     email 'foo@bar.com'
     stripe_id 'inv_12345'
 

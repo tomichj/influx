@@ -7,6 +7,7 @@ class CreateInvoicePayments < migration_base_class()
       t.integer  'subscriber_id'
       t.integer  'subscription_id'
       t.integer  'plan_id'
+      t.string   'uuid',          limit: 191
       t.integer  'amount'
       t.integer  'fee_amount'
       t.string   'currency'
@@ -16,10 +17,12 @@ class CreateInvoicePayments < migration_base_class()
       t.date     'card_expiration'
       t.string   'card_type'
       t.text     'error'
+      t.datetime 'payment_at'
       t.timestamps
     end
 
     add_index 'influx_invoice_payments', 'subscription_id'
     add_index 'influx_invoice_payments', 'email'
+    add_index 'influx_invoice_payments', 'uuid'
   end
 end

@@ -17,21 +17,22 @@ ActiveRecord::Schema.define(version: 20170802220139) do
     t.integer "subscriber_id"
     t.integer "subscription_id"
     t.integer "plan_id"
+    t.string "uuid", limit: 191
     t.integer "amount"
     t.integer "fee_amount"
     t.string "currency"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string "state"
     t.string "stripe_id"
     t.string "card_last4"
     t.date "card_expiration"
     t.string "card_type"
     t.text "error"
-    t.text "customer_address"
-    t.text "business_address"
+    t.datetime "payment_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["email"], name: "index_influx_invoice_payments_on_email"
     t.index ["subscription_id"], name: "index_influx_invoice_payments_on_subscription_id"
+    t.index ["uuid"], name: "index_influx_invoice_payments_on_uuid"
   end
 
   create_table "influx_plans", force: :cascade do |t|
