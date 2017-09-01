@@ -6,15 +6,18 @@ module Influx
     extend ActiveSupport::Concern
     
     included do
-      before_save :populate_uuid
-      validates_uniqueness_of :uuid
+      before_create :populate_uuid
     end
 
     def populate_uuid
-      if new_record?
-        while !valid? || self.uuid.nil?
-          self.uuid = SecureRandom.uuid
-        end
+      self.uuid = generate_uuid
+    end
+
+    def generate_uuid
+      loop do
+        token = SecureRandom.uuid
+        Rails.logger.info "!!!!!!!!!!!! token: #{token}"
+        break token unless self.class.where(uuid: token).exists?
       end
     end
   end

@@ -14,6 +14,7 @@ module Influx
         invoice.fail!
       end
     end
+
     describe '#uuid' do
       it 'has a uuid' do
         invoice = build(:invoice_payment, uuid: nil)
@@ -21,9 +22,9 @@ module Influx
         expect(invoice.reload.uuid).to_not be_nil
       end
       it 'reloads the uuid on collision' do
-        create(:invoice_payment, uuid: 'collision')
-        expect(SecureRandom).to receive(:uuid).and_return('collision', 'all sweet')
-        invoice = build(:invoice_payment, uuid: nil)
+        first_uuid = create(:invoice_payment).uuid
+        expect(SecureRandom).to receive(:uuid).and_return(first_uuid, 'all sweet')
+        invoice = build(:invoice_payment)
         invoice.save
         expect(invoice.uuid).to eq 'all sweet'
       end
@@ -32,6 +33,15 @@ module Influx
         invoice.email = nil
         invoice.save
         expect(invoice.uuid).to be_nil
+      end
+    end
+
+    describe '#state' do
+      it 'can change from pending to finished' do
+        invoice = create(:invoice_payment, state: 'pending')
+        invoice.save!
+        invoice.finish!
+        expect(invoice.reload.finished?).to be_truthy
       end
     end
   end
