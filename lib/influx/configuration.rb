@@ -8,18 +8,6 @@ module Influx
     # @return [String]
     attr_accessor :subscriber
 
-    # Enable or disable Influx's built-in routes.
-    #
-    # Defaults to 'true'.
-    #
-    # If you disable the routes, your application is responsible for all routes.
-    #
-    # You can deploy a copy of Influx's routes with `rails generate influx:routes`,
-    # which will also set `config.routes = false`.
-    #
-    # @return [Boolean]
-    # attr_accessor :routes
-
     # Stripe secret key.
     #
     # Defaults to ENV['STRIPE_SECRET_KEY']
@@ -33,13 +21,6 @@ module Influx
     #
     # @return [String]
     attr_accessor :publishable_key
-
-    # The 'from' address in emails from your system.
-    #
-    # Defaults to 'sales@example.com'
-    #
-    # @return [String]
-    # attr_accessor :support_email
 
     # Currency you do business in.
     #
@@ -63,12 +44,6 @@ module Influx
       # @support_email = 'sales@example.com'
       @default_currency = 'usd'
       @event_retriever = 'Influx::EventRetriever'
-    end
-
-    def setup_stripe
-      ::StripeEvent.event_retriever = event_retriever
-      Stripe.api_version = ENV['STRIPE_API_VERSION'] || '2015-06-15'
-      Stripe.api_key = secret_key
     end
 
     def event_retriever
@@ -119,6 +94,18 @@ module Influx
     def all(callable = Proc.new)
       ::StripeEvent.all(callable)
     end
+
+
+
+    #
+    # Read the config and plug values into Stripe and StripeEvent
+    #
+    def setup_stripe
+      ::StripeEvent.event_retriever = @event_retriever
+      Stripe.api_version = ENV['STRIPE_API_VERSION'] || '2015-06-15'
+      Stripe.api_key = secret_key
+    end
+
   end
 
 

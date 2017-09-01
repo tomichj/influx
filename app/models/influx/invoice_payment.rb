@@ -34,7 +34,7 @@ module Influx
     private
 
     def instrument_finish
-      Influx.configuration.instrument('influx.invoice.payment.finished', self)
+      Influx.configuration.instrument('influx.invoice.payment.succeeded', self)
     end
 
     def instrument_fail
