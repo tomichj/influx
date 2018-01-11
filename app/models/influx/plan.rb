@@ -1,6 +1,6 @@
 module Influx
   class Plan < ActiveRecord::Base
-    has_many :subscriptions, class_name: 'Influx::Subscription'
+    has_many :subscriptions, class_name: 'Influx::Subscription', foreign_key: :influx_plan_id
 
     validates_presence_of :name
     validates_presence_of :amount
