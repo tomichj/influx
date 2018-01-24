@@ -5,15 +5,15 @@ module Influx
   #
   # A subscription, requires a plan and a subscriber.
   #
-  # Can be in several states:
+  # A subscription can be in several states:
   # * pending - Stripe subscription not yet started
   # * active - Stripe subscription is started
   # * canceled - Stripe subscription is canceled
-  # * errorred - attempted to start Stripe subscription, but it failed
+  # * errored - attempted to start Stripe subscription, but it failed
   #
-  # The following events are fired:
-  # * influx.subscription.active - when account is activated
-  # * influx.subscription.cancel - when account is canceled
+  # A subscription can fire any of these events as it transitions through it's lifecycle:
+  # * influx.subscription.active - when subscription is activated
+  # * influx.subscription.cancel - when subscription is canceled
   # * influx.subscription.fail - when an error occurs processing the subscription
   #
   class Subscription < ActiveRecord::Base
