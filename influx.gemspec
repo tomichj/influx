@@ -30,9 +30,12 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'rails', '>= 4.2'
   spec.add_dependency 'jquery-rails'
-  spec.add_dependency 'stripe', '>= 1.20.1'
-  spec.add_dependency 'stripe_event', '>= 1.7.0'
-  spec.add_dependency 'aasm', '>= 4.12.2'
+  spec.add_dependency 'stripe', '~> 1.31'
+  spec.add_dependency 'stripe_event', '~> 1.7.0'
+  spec.add_dependency 'aasm', '~> 4.12.2'
+  # spec.add_dependency 'stripe', '>= 1.20.1'
+  # spec.add_dependency 'stripe_event', '>= 1.7.0'
+  # spec.add_dependency 'aasm', '>= 4.12.2'
 
   spec.add_development_dependency 'sqlite3'
   spec.add_development_dependency 'rspec-rails'
