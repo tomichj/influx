@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :invoice_payment, class: 'Influx::InvoicePayment' do
     association :subscription
     association :subscriber

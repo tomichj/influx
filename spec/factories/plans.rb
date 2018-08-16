@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :plan, class: 'Influx::Plan' do
     sequence(:name)      { |n| 'The Rspec Test Plan' }
     sequence(:stripe_id) { |n| "rspec-test-plan#{n}" }

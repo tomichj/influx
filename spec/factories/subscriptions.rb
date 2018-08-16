@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :subscription, :class => 'Influx::Subscription' do
     association :plan
     association :subscriber
