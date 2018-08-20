@@ -22,6 +22,13 @@ module Influx
     # @return [String]
     attr_accessor :publishable_key
 
+    # Stripe signing secret.
+    #
+    # Defaults to ENV['STRIPE_SIGNING_SECRET']
+    #
+    # @return [String]
+    attr_accessor :signing_secret
+
     # Currency you do business in.
     #
     # Defaults to 'usd'
@@ -34,21 +41,30 @@ module Influx
     # Defaults to 'Influx::EventRetriever'
     #
     # @return [String]
-    attr_accessor :event_retriever
+    # attr_accessor :event_retriever
 
+    # Filter Stripe events (see https://github.com/integrallis/stripe_event)
+    #
+    # Default filters no events.
+    #
+    # @return [lambda]
+    attr_accessor :event_filter
+
+    #
+    # Set config defaults
+    #
     def initialize
       @subscriber = '::User'
-      # @routes = true
       @publishable_key = EnvWrapper.new('STRIPE_PUBLISHABLE_KEY')
       @secret_key = EnvWrapper.new('STRIPE_SECRET_KEY')
-      # @support_email = 'sales@example.com'
+      @signing_secret = EnvWrapper.new('STRIPE_SIGNING_SECRET')
       @default_currency = 'usd'
-      @event_retriever = 'Influx::EventRetriever'
+      @event_filter = lambda { |event| event }
     end
 
-    def event_retriever
-      @event_retriever.constantize.new
-    end
+    # def event_retriever
+    #   # @event_filter.constantize.new
+    # end
 
     def secret_key=(key)
       @secret_key = key
@@ -80,9 +96,6 @@ module Influx
       subscriber_class.model_name.plural
     end
 
-
-    # Subscribe to a stripe event.
-    #
     def subscribe(name, callable = Proc.new)
       ::StripeEvent.subscribe(name, callable)
     end
@@ -95,19 +108,16 @@ module Influx
       ::StripeEvent.all(callable)
     end
 
-
-
     #
     # Read the config and plug values into Stripe and StripeEvent
     #
     def setup_stripe
-      ::StripeEvent.event_retriever = @event_retriever
+      StripeEvent.event_filter = Influx::EventFilter.new
+      StripeEvent.signing_secret = @signing_secret
       Stripe.api_version = ENV['STRIPE_API_VERSION'] || '2015-06-15'
       Stripe.api_key = secret_key
     end
-
   end
-
 
   def self.configuration
     @configuration ||= Configuration.new
@@ -142,5 +152,19 @@ class EnvWrapper
   # See https://github.com/peterkeen/payola/issues/256 for details
   def is_a?(other)
     ENV[@key].is_a?(other)
+  end
+end
+
+module Influx
+  #
+  # Record every event id as we process them.
+  # Do not process an event we've already seen.
+  #
+  class EventFilter
+    def call(event)
+      return nil if Influx::StripeEvent.exists?(stripe_event_id: event.id)
+      Influx::StripeEvent.create!(stripe_event_id: event.id)
+      Influx.configuration.event_filter(event)
+    end
   end
 end

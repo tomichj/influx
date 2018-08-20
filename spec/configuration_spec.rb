@@ -3,9 +3,9 @@ require 'influx/configuration'
 
 module Influx
   describe Configuration do
-    it 'provides an event retriever' do
-      expect(Configuration.new.event_retriever).to_not be_nil
-    end
+    # it 'provides an event retriever' do
+    #   expect(Configuration.new.event_retriever).to_not be_nil
+    # end
 
     describe 'subscriber' do
       before(:each) do

@@ -6,5 +6,4 @@ require 'influx/event_retriever'
 require 'influx/migration_helpers'
 
 module Influx
-  # Your code goes here...
 end

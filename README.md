@@ -27,7 +27,7 @@ To get started, add Influx to your `Gemfile` and run `bundle install` to install
 gem 'influx'
 ```
 
-Run the installer and then install the migrations:
+Run the influx installer and then the influx migrations:
 
     % rails generate influx:install
     % rails influx:install:migrations
@@ -37,6 +37,12 @@ The Influx install generator assumes your subscriber model is `::User`. You may
 specify an alternate class with the `--subscriber` flag:
 
     % rails generate influx::install --subscriber MyApp::Profile
+
+
+### What does the install task do?
+
+* Installs an initializer: `config/initializers/influx.rb`
+* Add a route to mount the StripeEvent engine: `mount StripeEvent::Engine => '/hooks/stripe'`
 
 
 ## Configuration
@@ -61,9 +67,12 @@ end
 
 ### Stripe Keys
 
-The default configuration reads Stripe keys from the environment, 
-via `ENV['STRIPE_SECRET_KEY']` and `ENV['STRIPE_PUBLISHABLE_KEY']`. Set your 
-keys in your environment before starting rails. 
+The default implementation expects your stripe keys to be set in three environment variables:
+
+* `STRIPE_PUBLISHABLE_KEY`
+* `STRIPE_SECRET_KEY`
+* `STRIPE_SIGNING_SECRET`
+
 
 It's not recommended, but you can instead set the keys yourself in the 
 Influx initializer:
@@ -72,6 +81,7 @@ Influx initializer:
 Influx.configure do |config|
   config.secret_key = 'sk_test_1234567890'
   config.publishable_key = 'pk_test_1234567890'
+  config.signing_secret = 'some_secret_key'
 end
 ```
 
@@ -91,18 +101,18 @@ See Stripe's [Supported Currencies](https://stripe.com/docs/currencies) page
 for more information.
 
 
-### Event Retriever
+### Event Filter
 
 Influx uses the [stripe_event](https://github.com/integrallis/stripe_event) 
-gem to retrieve Stripe events. Influx ships with an EventRetriever 
+gem to retrieve Stripe events. Influx ships with an EventFilter 
 implementation that records all events seen and will not retrieve an event 
 with the same id a second time.
 
-You can specify your own event retriever in the initializer config:
+You can specify your own additional event filter in the initializer config:
 
 ```ruby
 Influx.configure do |config|
-  config.event_retriever = 'MyApp::MyCustomEventRetriever'
+  config.event_filter = MyApp::MyCustomEventFilter.new
 end
 ```
 
