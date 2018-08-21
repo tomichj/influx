@@ -8,9 +8,10 @@ module Influx
 
     # @param [Influx::Subscription]
     # @param [Influx::Plan]
-    def initialize(subscription:, new_plan:)
+    def initialize(subscription:, new_plan:, trial_end: nil)
       @subscription = subscription
       @new_plan = new_plan
+      @trial_end = trial_end
     end
 
     def call
@@ -20,6 +21,7 @@ module Influx
       begin
         stripe_sub = fetch_stripe_subscription
         stripe_sub.plan = @new_plan.stripe_id
+        stripe_sub.trial_end = @trial_end if @trial_end.present?
         # deal with prorating and coupons some day
         stripe_sub.save
 
@@ -30,10 +32,9 @@ module Influx
         @subscription.errors[:base] << e.message
       end
 
+      @subscription.instrument_plan_changed
       @subscription
     end
-
-    private
 
     # @return [Stripe::Subscription]
     def fetch_stripe_subscription

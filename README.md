@@ -8,16 +8,11 @@ subscription service.
 Influx borrows heavily from the gems payola and koudoku, and especially 
 the book 'Mastering Modern Payments'.
 
-Influx does not yet support coupons, nor some features of subscriptions 
-such as "quantity". Support is coming soon.
-
-
 ## Dependencies
 
 Influx requires that you have:
 * a subscriber model (Influx defaults to `::User`) with an `email` attribute
 * Stripe keys
-
 
 ## Installation
 
@@ -101,14 +96,13 @@ See Stripe's [Supported Currencies](https://stripe.com/docs/currencies) page
 for more information.
 
 
-### Event Filter
+### Event Processing
 
 Influx uses the [stripe_event](https://github.com/integrallis/stripe_event) 
-gem to retrieve Stripe events. Influx ships with an EventFilter 
-implementation that records all events seen and will not retrieve an event 
-with the same id a second time.
+gem to process Stripe events. Influx records each event id and will not
+process an event with the same id a second time.
 
-You can specify your own additional event filter in the initializer config:
+You can supply an event filter in the initializer config:
 
 ```ruby
 Influx.configure do |config|

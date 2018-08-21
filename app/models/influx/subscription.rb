@@ -11,9 +11,10 @@ module Influx
   # * canceled - Stripe subscription is canceled
   # * errored - attempted to start Stripe subscription, but it failed
   #
-  # A subscription can fire any of these events as it transitions through it's lifecycle:
+  # Subscription events you can subscribe to:
   # * influx.subscription.active - when subscription is activated
   # * influx.subscription.cancel - when subscription is canceled
+  # * influx.subscription.plan.changed - when subscription's plan is changed
   # * influx.subscription.fail - when an error occurs processing the subscription
   #
   class Subscription < ActiveRecord::Base
@@ -78,6 +79,10 @@ module Influx
 
     def activate_stripe_subscription
       Influx::ActivateStripeSubscription.call(subscription: self)
+    end
+
+    def instrument_plan_changed
+      Influx.configuration.instrument('influx.subscription.plan.changed', self)
     end
 
     private

@@ -27,7 +27,58 @@ module Influx
         end
       end
 
+      describe 'trial_end' do
+        before do
+          @stripe_sub = Stripe::Subscription.new
+          allow(@stripe_sub).to receive(:save).and_return(true) # trial_end value is wiped when save is called
+          allow_any_instance_of(ChangeSubscriptionPlan).to receive(:fetch_stripe_subscription).and_return(@stripe_sub)
+        end
 
+        context 'is not set' do
+          before do
+            Influx::ChangeSubscriptionPlan.call(subscription: @subscription, new_plan: @plan2)
+          end
+
+          it 'should not have trial_end set' do
+            expect(@stripe_sub.try(:trial_end)).to be_nil
+          end
+        end
+
+        context 'is set' do
+          before do
+            @trial_end = 'now'
+            Influx::ChangeSubscriptionPlan.call(subscription: @subscription, new_plan: @plan2, trial_end: @trial_end)
+          end
+
+          it 'should have trial_end set' do
+            expect(@stripe_sub.trial_end).to eq(@trial_end)
+          end
+        end
+      end
+
+      describe 'cancel at period end' do
+        context 'is not set' do
+          before do
+            Influx::ChangeSubscriptionPlan.call(subscription: @subscription, new_plan: @plan2)
+          end
+
+          it 'should not change attribute' do
+            expect(@subscription.cancel_at_period_end).to be false
+          end
+        end
+
+        context 'is set' do
+          before do
+            @subscription = create(:subscription, plan: @plan1, stripe_token: @token, cancel_at_period_end: true)
+            ActivateStripeSubscription.call(subscription: @subscription)
+            Influx::ChangeSubscriptionPlan.call(subscription: @subscription, new_plan: @plan2)
+          end
+
+          it 'should be reset to false' do
+            expect(@subscription.cancel_at_period_end).to be false
+          end
+        end
+      end
     end
   end
 end
