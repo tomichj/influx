@@ -19,28 +19,13 @@ module Influx
       end
     end
 
-    initializer :inject_helpers do |app|
-      ActiveSupport.on_load :action_controller do
-        ::ActionController::Base.send(:helper, Influx::PriceHelper)
-      end
-
-      ActiveSupport.on_load :action_mailer do
-        ::ActionMailer::Base.send(:helper, Influx::PriceHelper)
-      end
-
-      ActiveSupport.on_load :action_view do
-        include Influx::PriceHelper
-      end
-    end
-
     initializer :configure_subscription_listeners do |app|
       Influx.configure do |config|
-        config.subscribe 'invoice.payment_succeeded',     Influx::EventPaymentSucceeded
-        config.subscribe 'invoice.payment_failed',        Influx::EventPaymentFailed
-        config.subscribe 'customer.subscription.updated', Influx::EventSubscriptionUpdated
-        config.subscribe 'customer.subscription.deleted', Influx::EventSubscriptionDeleted
+        config.subscribe 'invoice.payment_failed',        Influx::Events::EventPaymentFailed
+        config.subscribe 'invoice.payment_succeeded',     Influx::Events::EventPaymentSucceeded
+        config.subscribe 'customer.subscription.deleted', Influx::Events::EventSubscriptionDeleted
+        config.subscribe 'customer.subscription.updated', Influx::Events::EventSubscriptionUpdated
       end
     end
-
   end
 end

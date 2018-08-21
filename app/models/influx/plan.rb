@@ -9,7 +9,7 @@ module Influx
     validates_uniqueness_of :stripe_id
 
     def create_stripe_plan
-      Influx::ActivateStripePlan.call(plan: self)
+      Influx::Services::ActivateStripePlan.call(plan: self)
     end
   end
 end

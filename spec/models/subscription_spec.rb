@@ -5,7 +5,7 @@ module Influx
     describe '#sync_with!' do
       it 'should sync fields from stripe subscription' do
         plan = create(:plan)
-        ActivateStripePlan.call(plan: plan)
+        Influx::Services::ActivateStripePlan.call(plan: plan)
         subscription = create(:subscription, plan: plan)
         stripe_subscription = Stripe::Customer.create.subscriptions.create(
           plan: plan.stripe_id,

@@ -16,7 +16,6 @@ module Influx
     def generate_uuid
       loop do
         token = SecureRandom.uuid
-        Rails.logger.info "!!!!!!!!!!!! token: #{token}"
         break token unless self.class.where(uuid: token).exists?
       end
     end
