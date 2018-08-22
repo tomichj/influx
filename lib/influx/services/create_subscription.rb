@@ -9,11 +9,10 @@ module Influx
       #
       # Create a subscription.
       #
-      # plan: Influx::Plan to subscribe to. Plan must already exist in stripe.
-      # subscriber: the model subscribing to the plan.
-      # token: token for payment source, from stripe
-      # options:
-      #   trial_end - end date of trial, as a Time
+      # @param plan [Influx::Plan] to subscribe to. Plan must already exist in stripe.
+      # @param subscriber [Influx::Subscriber] the model (aka user) subscribing to the plan.
+      # @param token [Stripe Token] token for payment source, from stripe
+      # @param options [Hash] :trial_end, the end date of trial, in Unix time (DateTime.to_i)
       def initialize(plan:, subscriber:, token:, options: {})
         @plan       = plan
         @subscriber = subscriber

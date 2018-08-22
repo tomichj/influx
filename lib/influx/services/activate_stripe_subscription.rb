@@ -8,6 +8,7 @@ module Influx
     class ActivateStripeSubscription
       include Influx::Services::Service
 
+      # @param subscription [Influx::Subscription]
       def initialize(subscription:)
         @subscription = subscription
         @subscriber   = @subscription.subscriber

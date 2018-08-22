@@ -6,7 +6,8 @@ module Influx
     class CancelSubscription
       include Influx::Services::Service
 
-      # @param [Influx::Subscription]
+      # @param subscription [Influx::Subscription]
+      # @param options [Hash] includes :at_period_end
       def initialize(subscription:, options: {})
         @subscription = subscription
         @options      = options

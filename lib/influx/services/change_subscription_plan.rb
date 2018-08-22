@@ -6,8 +6,9 @@ module Influx
     class ChangeSubscriptionPlan
       include Influx::Services::Service
 
-      # @param [Influx::Subscription]
-      # @param [Influx::Plan]
+      # @param subscription [Influx::Subscription]
+      # @param new_plan [Influx::Plan]
+      # @param trial_end [Integer] of unix time to end trial at.
       def initialize(subscription:, new_plan:, trial_end: nil)
         @subscription = subscription
         @new_plan     = new_plan
@@ -33,7 +34,7 @@ module Influx
         @subscription
       end
 
-      # @return [Stripe::Subscription]
+
       def retrieve_stripe_subscription
         stripe_customer_id = @subscription.subscriber.stripe_customer_id
         stripe_customer    = Stripe::Customer.retrieve(stripe_customer_id)

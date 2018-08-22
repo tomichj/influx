@@ -13,6 +13,7 @@ module Influx
     class CreatePlan
       include Influx::Services::Service
 
+      # @param params [Hash] new plan's attributes
       def initialize(params = {})
         @params = params
       end

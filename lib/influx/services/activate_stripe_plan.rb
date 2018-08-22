@@ -1,7 +1,7 @@
 module Influx
   module Services
     #
-    # Activate or fetch the Stripe Plan for a given Influx Plan.
+    # Activate a plan on Stripe, or fetch the plan from Stripe if it's already been created there.
     #
     class ActivateStripePlan
       include Influx::Services::Service

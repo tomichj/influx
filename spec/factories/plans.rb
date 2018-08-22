@@ -4,8 +4,8 @@ FactoryBot.define do
     sequence(:stripe_id) { |n| "rspec-test-plan#{n}" }
     amount { 5000 }
     interval {'month'}
-    interval_count {1}
-    # trial_period_days 1
+    interval_count { 1 }
+    trial_period_days { nil }
     published {false}
   end
 end

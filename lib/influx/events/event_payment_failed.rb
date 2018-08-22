@@ -1,5 +1,3 @@
-require 'influx/services/service'
-
 module Influx
   module Events
     #
