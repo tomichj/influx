@@ -1,8 +1,9 @@
 require 'active_support/concern'
 
 module Influx
-
+  #
   # The client subscriber class should include this concern.
+  #
   module Subscriber
     extend ActiveSupport::Concern
 

@@ -3,9 +3,9 @@ module Influx
     source_root File.expand_path('../templates', __FILE__)
     class_option :subscriber,
                  optional: true,
-                 type: :string,
-                 banner: 'subscriber',
-                 desc: "Specify the subscriber class name if you will use anything other than '::User'"
+                 type:     :string,
+                 banner:   'subscriber',
+                 desc:     "Specify the subscriber class name if you will use anything other than '::User'"
 
     def initialize(*)
       super
@@ -28,6 +28,7 @@ module Influx
     end
 
     private
+
     def subscriber_class_name
       options[:subscriber] ? options[:subscriber].classify : '::User'
     end
