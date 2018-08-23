@@ -52,8 +52,7 @@ module Influx
     end
 
     def trial_expired?
-      return false unless stripe_status == 'trialing'
-      trial_end < Time.now
+      is_trial? && trial_end < Time.current
     end
 
     def card_info?
