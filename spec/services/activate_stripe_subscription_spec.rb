@@ -78,6 +78,23 @@ module Influx
             expect(subscription.errored?).to be true
           end
         end
+
+        describe 'trial' do
+          before do
+            @plan = create(:plan, trial_period_days: 30)
+            ActivateStripePlan.call(plan: @plan)
+            @subscription = create(:subscription, plan: @plan, stripe_token: nil)
+            ActivateStripeSubscription.call(subscription: @subscription)
+          end
+
+          it 'starts subscription without token while on trial' do
+            expect(@subscription.reload.stripe_customer_id).to_not be_nil
+          end
+
+          it 'has set trial_end on subscription' do
+            expect(@subscription.trial_end).to be_within(1.days).of(@plan.trial_period_days.days.from_now)
+          end
+        end
       end
     end
   end

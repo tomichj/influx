@@ -36,7 +36,7 @@ specify an alternate class with the `--subscriber` flag:
 
 ### What does the install task do?
 
-* Installs an initializer: `config/initializers/influx.rb`
+* Installs and configures an initializer: `config/initializers/influx.rb`
 * Add a route to mount the StripeEvent engine: `mount StripeEvent::Engine => '/hooks/stripe'`
 
 
