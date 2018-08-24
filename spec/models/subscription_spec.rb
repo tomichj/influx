@@ -28,26 +28,32 @@ module Influx
     end
 
     describe 'trialing' do
-      context 'trial not end' do
+      context 'with trial not end' do
         before(:each) do
           @subscription = build(:subscription, stripe_status: 'trialing', trial_end: Time.now + 5.days)
         end
-        it 'is still trial' do
+        it 'is trialing' do
           expect(@subscription.is_trial?).to be_truthy
         end
         it 'is not expired' do
           expect(@subscription.trial_expired?).to be_falsey
+        end
+        it 'is active' do
+          expect(@subscription.trial_active?).to be_truthy
         end
       end
       context 'trial end reached' do
         before(:each) do
           @subscription = build(:subscription, stripe_status: 'trialing', trial_end: Time.now - 5.days)
         end
-        it 'is still trial' do
+        it 'is trialing' do
           expect(@subscription.is_trial?).to be_truthy
         end
         it 'is expired' do
           expect(@subscription.trial_expired?).to be_truthy
+        end
+        it 'is not active' do
+          expect(@subscription.trial_active?).to be_falsey
         end
       end
     end

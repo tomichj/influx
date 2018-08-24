@@ -55,6 +55,10 @@ module Influx
       is_trial? && trial_end < Time.current
     end
 
+    def trial_active?
+      is_trial? && trial_end > Time.current
+    end
+
     def card_info?
       card_last4 && card_type && card_expiration
     end
