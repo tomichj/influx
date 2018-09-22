@@ -22,10 +22,9 @@ To get started, add Influx to your `Gemfile` and run `bundle install` to install
 gem 'influx'
 ```
 
-Run the influx installer and then the influx migrations:
+Run the influx installer and then run the migrations:
 
     % rails generate influx:install
-    % rails influx:install:migrations
     % rake db:migrate
 
 The Influx install generator assumes your subscriber model is `::User`. You may
@@ -67,7 +66,6 @@ The default implementation expects your stripe keys to be set in three environme
 * `STRIPE_PUBLISHABLE_KEY`
 * `STRIPE_SECRET_KEY`
 * `STRIPE_SIGNING_SECRET`
-
 
 It's not recommended, but you can instead set the keys yourself in the 
 Influx initializer:
