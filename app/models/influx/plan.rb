@@ -8,6 +8,8 @@ module Influx
     validates_presence_of :stripe_id
     validates_uniqueness_of :stripe_id
 
+    scope :published, -> { where(published: true) }
+
     def create_stripe_plan
       Influx::Services::ActivateStripePlan.call(plan: self)
     end
