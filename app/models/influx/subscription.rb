@@ -47,16 +47,16 @@ module Influx
       end
     end
 
-    def is_trial?
+    def trial?
       stripe_status == 'trialing'
     end
 
     def trial_expired?
-      is_trial? && trial_end < Time.current
+      trial? && trial_end < Time.current
     end
 
     def trial_active?
-      is_trial? && trial_end > Time.current
+      trial? && trial_end > Time.current
     end
 
     def card_info?

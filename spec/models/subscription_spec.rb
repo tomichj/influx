@@ -33,7 +33,7 @@ module Influx
           @subscription = build(:subscription, stripe_status: 'trialing', trial_end: Time.now + 5.days)
         end
         it 'is trialing' do
-          expect(@subscription.is_trial?).to be_truthy
+          expect(@subscription.trial?).to be_truthy
         end
         it 'is not expired' do
           expect(@subscription.trial_expired?).to be_falsey
@@ -47,7 +47,7 @@ module Influx
           @subscription = build(:subscription, stripe_status: 'trialing', trial_end: Time.now - 5.days)
         end
         it 'is trialing' do
-          expect(@subscription.is_trial?).to be_truthy
+          expect(@subscription.trial?).to be_truthy
         end
         it 'is expired' do
           expect(@subscription.trial_expired?).to be_truthy
