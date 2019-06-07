@@ -36,7 +36,7 @@ Gem::Specification.new do |spec|
   #
   spec.add_dependency 'stripe_event', '>= 2.0.0'
   spec.add_dependency 'stripe', ['>= 2.8', '< 4.0']
-  spec.add_dependency 'aasm', '>= 4.0.7'
+  spec.add_dependency 'aasm', '>= 4.0.8'
 
 
   # spec.add_dependency 'stripe', '>= 1.20.1'
