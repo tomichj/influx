@@ -29,11 +29,11 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'rails', '>= 4.2'
-  spec.add_dependency 'jquery-rails'
+  # spec.add_dependency 'jquery-rails'
 
   # spec.add_dependency 'stripe', '~> 1.31'
   # spec.add_dependency 'stripe_event', '~> 1.7.0'
-  #
+  
   spec.add_dependency 'stripe_event', '>= 2.0.0'
   spec.add_dependency 'stripe', ['>= 2.8', '< 4.0']
   spec.add_dependency 'aasm', '>= 4.0.8'

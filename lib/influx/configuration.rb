@@ -55,9 +55,9 @@ module Influx
     #
     def initialize
       @subscriber = '::User'
-      @publishable_key = EnvWrapper.new('STRIPE_PUBLISHABLE_KEY')
-      @secret_key = EnvWrapper.new('STRIPE_SECRET_KEY')
-      @signing_secret = EnvWrapper.new('STRIPE_SIGNING_SECRET')
+      @publishable_key = EnvWrapper.new('STRIPE_PUBLISHABLE_KEY').to_s
+      @secret_key = EnvWrapper.new('STRIPE_SECRET_KEY').to_s
+      @signing_secret = EnvWrapper.new('STRIPE_SIGNING_SECRET').to_s
       @default_currency = 'usd'
       @event_filter = lambda { |event| event }
     end

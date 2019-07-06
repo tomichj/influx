@@ -1,5 +1,8 @@
 module Influx
   module Services
+    #
+    # Change credit card used for payment of a subscription.
+    #
     class ChangeSubscriptionCard
       include Influx::Services::Service
 
