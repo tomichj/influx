@@ -8,8 +8,8 @@ module Influx
         ActivateStripePlan.call(plan: plan)
         subscription = create(:subscription, plan: plan)
         stripe_subscription = Stripe::Customer.create.subscriptions.create(
-          plan: plan.stripe_id,
-          source: StripeMock.generate_card_token(last4: '1234', exp_year: Time.now.year + 1)
+            plan: plan.stripe_id,
+            source: StripeMock.generate_card_token(last4: '1234', exp_year: Time.now.year + 1)
         )
 
         # load up a cancelled timestamp, so we can test it in sync
@@ -23,7 +23,22 @@ module Influx
         expect(subscription.current_period_end).to eq Time.at(stripe_subscription.current_period_end)
         expect(subscription.canceled_at).to eq Time.at(now)
         expect(subscription.amount).to eq 5000
-        expect(subscription.stripe_status).to eq 'active'
+      end
+      it 'should sync coupon' do
+        coupon = 'fake_coupon'
+        Stripe::Coupon.create(id: coupon, percent_off: 25, duration: 'repeating', duration_in_months: 3)
+        plan = create(:plan)
+        ActivateStripePlan.call(plan: plan)
+        subscription = create(:subscription, plan: plan, coupon: coupon)
+        stripe_subscription = Stripe::Customer.create.subscriptions.create(
+            plan: plan.stripe_id,
+            coupon: coupon,
+            source: StripeMock.generate_card_token(last4: '1234', exp_year: Time.now.year + 1)
+        )
+
+        subscription.sync_with!(stripe_subscription)
+        subscription.reload
+        expect(subscription.coupon).to eq coupon
       end
     end
 

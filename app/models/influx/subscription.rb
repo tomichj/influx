@@ -72,6 +72,9 @@ module Influx
       self.stripe_status        = stripe_subscription.status
       self.cancel_at_period_end = stripe_subscription.cancel_at_period_end
       self.amount               = stripe_subscription.plan.amount
+      # Support for discounts is added to stripe-ruby-mock in v2.2.0, 84f08eb
+      self.coupon               = stripe_subscription.discount && stripe_subscription.discount.coupon.id if stripe_subscription.respond_to?(:discount)
+
       self.save!
       self
     end

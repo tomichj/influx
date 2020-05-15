@@ -15,10 +15,11 @@ module Influx
     # token: token for payment source, from stripe
     # options:
     #   trial_end - end date of trial, as a Time
-    def initialize(plan:, subscriber:, token:, options: {})
+    def initialize(plan:, subscriber:, token:, coupon: nil, options: {})
       @plan = plan
       @subscriber = subscriber
       @token = token
+      @coupon = coupon
       @options = options
     end
 
@@ -31,6 +32,7 @@ module Influx
         s.email = @subscriber.email
         s.stripe_token = @token
         s.trial_end = @options[:trial_end] if @options[:trial_end].present?
+        s.coupon = @coupon
       end
       subscription.save
       subscription.activate_stripe_subscription

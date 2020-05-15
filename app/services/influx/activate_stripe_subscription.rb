@@ -39,6 +39,7 @@ module Influx
         quantity: 1
       }
       stripe_subscription_params[:trial_end] = @subscription.trial_end.to_i if @subscription.trial_end.present?
+      stripe_subscription_params[:coupon] = @subscription.coupon if @subscription.coupon.present?
       stripe_customer.subscriptions.create(stripe_subscription_params)
     end
 

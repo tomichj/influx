@@ -66,6 +66,18 @@ module Influx
         expect(source2).to be source1
       end
 
+      it 'sends coupon with subscription' do
+        coupon = 'fake_coupon'
+        Stripe::Coupon.create(id: coupon, percent_off: 25, duration: 'repeating', duration_in_months: 3)
+
+        subscription = create(:subscription, stripe_token: token, coupon: coupon)
+        ActivateStripePlan.call(plan: subscription.plan)
+        ActivateStripeSubscription.call(subscription: subscription)
+
+        stripe_subscription = Stripe::Subscription.retrieve(subscription.stripe_id)
+        expect(stripe_subscription.discount.coupon.id).to eq coupon
+      end
+
       describe 'on stripe error' do
         it 'updates the error attribute' do
           StripeMock.prepare_card_error(:card_declined, :new_customer)

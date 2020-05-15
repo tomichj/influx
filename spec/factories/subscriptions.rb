@@ -11,7 +11,7 @@ FactoryGirl.define do
     # trial_start          30.days.ago
     # trial_end            23.days.ago
     # canceled_at          nil
-    email 'justin@tomich.org'
+    email 'fake@email.org'
     # stripe_token 'tok_test1234'
     # stripe_id 'sub_1234'
   end
